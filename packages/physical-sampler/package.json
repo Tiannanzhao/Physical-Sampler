@@ -16,6 +16,7 @@
   },
   "bin": { "physical-sampler": "./cli.js" },
   "peerDependencies": { "react": ">=18", "react-dom": ">=18", "vite": ">=5" },
+  "peerDependenciesMeta": { "vite": { "optional": true } },
   "sideEffects": ["**/*.css"],
-  "files": ["*.js", "*.jsx", "*.css", "README.md"]
+  "files": ["*.js", "*.jsx", "*.css", "*.md"]
 }

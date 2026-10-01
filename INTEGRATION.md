@@ -2,11 +2,11 @@
 
 This is a working local prototype, not a published npm package or marketplace extension. It has a reusable React panel, Vite development bridge, stdio MCP server, and project-local configurations for Cursor, Claude Code and VS Code Copilot. Actual editor connections still require enabling the server in that editor; no account settings have been changed.
 
-For the consumer installation flow (npm install, manual integration, or a copyable coding-agent brief), see [the package README](./packages/physical-sampler/README.md). The package is independently distributable and excludes the workspace's reference-video cases. MCP is an optional addition to browser-panel use.
+This guide describes the optional file-backed configuration workflow. For the primary DialKit-style flow (sibling root, inline component controls and copy-to-agent), see [the package README](./packages/physical-sampler/README.md). The basic flow requires no Vite bridge or MCP. These MCP tools operate only on file-backed configuration.
 
 ## Try this project
 
-Run `npm run dev`, then visit http://127.0.0.1:5174/playground.
+Run `npm run dev`, then visit http://127.0.0.1:5174/project-bridge.
 Open **Physical Sampler** at the bottom right (or Alt+Shift+P), click **Select on page**, then the card or button. Only registered components are selectable. Controls differ per component. Sliders preview immediately; **Apply to project** writes `physical-sampler.config.json`, which the component consumes. **Discard** drops all local drafts. **Undo last apply** restores the previous applied values during this browser session. External changes trigger a conflict rather than silently overwriting a draft; discard and retry.
 
 These are authored controls, not inferred motion or automatic code understanding. Video analysis is not connected.

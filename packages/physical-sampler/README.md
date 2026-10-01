@@ -1,109 +1,88 @@
 # Physical Sampler
 
-Adjust registered React components in the page where they live. Preview parameter changes, replay interactions, and apply values to your project's configuration.
-
-For local React + Vite development. No separate workspace server or Motion dependency is required. Components must bind their controls to actual styles or animation code.
+Live controls for tuning motion and interface details inside the app you are building. Install in each project, mount one root, bind controls in a component, and use the project's existing development server.
 
 ## Installation
 
-This package is not published yet. The intended installation command after publication is:
+Not published to npm yet. After publication, the intended command is:
 
 ```sh
-npm install --save-dev physical-sampler
+npm install physical-sampler
 ```
 
-The public package name is provisional; availability must be checked before publishing. For now, install a local checkout instead:
+The public package name is provisional. For now, install the package from a local checkout:
 
 ```sh
-npm install --save-dev /absolute/path/to/Physical-Sampler/packages/physical-sampler
+npm install /absolute/path/to/Physical-Sampler/packages/physical-sampler
 ```
+
+React and React DOM 18+ are required. The basic panel does not require Motion, a Vite plugin, an MCP server or a separate workspace. Keep using your project's animation library. This prototype ships JSX sources; use a JSX-capable bundler. React + Vite is the verified setup; other bundlers have not been tested.
 
 ## Or ask your coding agent
 
-Copy this brief into your coding agent after installing the package:
+Copy this brief to your coding agent (replace the install path with your local checkout until npm publication):
 
-> Set up Physical Sampler in this React + Vite project. Add physicalSampler from physical-sampler/vite to the existing Vite plugins. Create physical-sampler.config.json with a version 1 schema for one existing component and controls that are actually bound to its styles or animation. Import SamplerProvider and useSampler from physical-sampler, wrap the application in SamplerProvider with that configuration, and use useSampler in the chosen component. Attach the hook's attributes to its DOM element. Preserve existing project behavior and scripts. Styles load automatically. Start the project's existing development command, verify the panel connects and that controls preview the component, and explain where to open the panel. Before a production release, use the saved configuration directly and remove development panel imports. MCP setup is optional; configure it only if requested.
-
-Installing dependencies and integrating source are separate steps. The CLI does not automatically edit React or Vite files.
+> Install Physical Sampler in this React project using its existing package manager. Import SamplerRoot and usePhysicalSampler from physical-sampler. Mount one SamplerRoot as a sibling alongside the application, not as a wrapper. Styles load automatically. In the component I want to tune, call usePhysicalSampler with a stable ID and a small set of controls based on its existing values. Bind the returned values to actual styles or animation properties, and spread attributes on the component's DOM element. Use the replay counter to restart an animation when useful. Preserve existing behavior. Start the project's usual development command and verify that the panel opens and closes and controls update the component. After I share copied Physical Sampler values, apply them to the corresponding control defaults or production code and verify the result. No Vite plugin or MCP setup is required for this basic flow.
 
 ## Manual setup
 
-1. Add the development bridge to your existing Vite configuration, keeping other plugins:
-
-```js
-import {defineConfig} from 'vite';
-import {physicalSampler} from 'physical-sampler/vite';
-
-export default defineConfig({
-  plugins: [/* your existing plugins, */ physicalSampler()],
-});
-```
-
-2. Create `physical-sampler.config.json` in the Vite project root:
-
-```json
-{
-  "version": 1,
-  "components": [{
-    "id": "card",
-    "label": "Card",
-    "parameters": [{
-      "id": "radius",
-      "label": "Corner radius",
-      "type": "number",
-      "value": 18,
-      "min": 0,
-      "max": 48,
-      "step": 1,
-      "unit": "px"
-    }]
-  }]
-}
-```
-
-3. Wrap your application and bind the component. Adjust the configuration import to your file's location:
+Mount one root and define controls where they are used:
 
 ```jsx
-import {SamplerProvider, useSampler} from 'physical-sampler';
-import config from '../physical-sampler.config.json';
+import React from 'react';
+import {SamplerRoot, usePhysicalSampler} from 'physical-sampler';
 
 function Card() {
-  const {values, attributes} = useSampler('card');
+  const {values, attributes} = usePhysicalSampler('card', {
+    radius: [18, 0, 48],
+    color: '#d0ec5c',
+  }, {label: 'Card'});
+
   return (
-    <article {...attributes} style={{borderRadius: values.radius, padding: 24, background: '#d0ec5c'}}>
+    <article {...attributes} style={{borderRadius: values.radius, background: values.color, padding: 24}}>
       Make room for curiosity.
     </article>
   );
 }
 
 export default function App() {
-  return <SamplerProvider config={config}><Card /></SamplerProvider>;
+  return <><Card /><SamplerRoot /></>;
 }
 ```
 
-Styles are imported automatically. `physical-sampler/styles.css` is also available as an explicit CSS entry. The provider owns the panel and must wrap hook consumers; a sibling root component is not supported.
+The root can be mounted alongside your app shell; no provider is needed. In a server-rendered React framework, keep these interactive components in the client boundary. Framework-specific support beyond Vite has not been verified. Styles load automatically; `physical-sampler/styles.css` is also available.
 
-4. Start your project's usual Vite development command. Open **Physical Sampler** at the bottom right or press **Alt+Shift+P**. Use **Select on page**, adjust the registered component, then **Apply to project** to save configuration. **Discard** removes drafts; **Undo last apply** restores the most recent applied values during the current browser session.
+Start your usual development server. Click **Physical Sampler** or press **Alt+Shift+P** to toggle the panel. **Escape** closes it. Use the component selector or **Select on page** to tune a registered component.
 
-For animation controls, bind `values` to your animation implementation and use the hook's `replay` counter to trigger replay. Adding a schema field alone does not implement behavior.
+## Controls
 
-## Optional coding-agent connection
-
-After installing locally, run this from the project root:
-
-```sh
-npx --no-install physical-sampler init .
+```js
+const {values, replay, attributes} = usePhysicalSampler('card', {
+  duration: [650, 100, 2000, 10], // [default, minimum, maximum, step]
+  color: '#d0ec5c',
+  enabled: true,
+  easing: {type: 'select', value: 'ease-out', options: ['linear', 'ease-out']},
+  distance: {type: 'number', label: 'Rise distance', value: 40, min: 0, max: 150, step: 1, unit: 'px'},
+});
 ```
 
-This creates an empty configuration only when one does not exist, and adds project-local MCP settings for Cursor, Claude Code and VS Code Copilot without replacing existing server entries. Enable the server in your editor. Keep Vite running separately for the live page. Generated settings use this machine's paths; regenerate them when moving machines and remove stale Physical Sampler entries first, since existing entries are preserved.
+Bind `values` to the real implementation. Add `replay` to the dependencies of an animation effect so **Replay** restarts it. Attach `attributes` to the DOM element to enable page selection. A control cannot change unbound properties. Supported types: number, boolean, select and six-digit hex color. Each independently tuned component needs a unique stable ID; matching definitions can share an ID and live values.
 
-Tools: `sampler_inspect`, `sampler_set_parameters`, and `sampler_register_component`. MCP is optional for the browser panel. It writes structured configuration, not arbitrary source code.
+## Tune, copy, close
 
-## Current scope
+- Sliders update live values immediately.
+- **Replay** increments the component's replay counter.
+- **Reset** restores the selected component's authored defaults.
+- **Copy values for agent** copies chosen values with a short instruction to apply them to the component defaults. It does not edit source files.
+- **Download values** exports the selected component's values as JSON.
+- Closing the panel preserves live values while the component remains mounted. Reloading or unmounting the last instance restores authored defaults. Copy values before leaving if you want to keep them.
 
-- Registered components only; supports number, boolean, select and color parameters.
-- Apply persists `physical-sampler.config.json`; external edits are detected through revisions.
-- Local, single-user development. The Vite bridge accepts localhost connections.
-- Production: consume saved values directly and omit the provider, hooks and panel imports. An automatic production adapter is not implemented.
-- No automatic DOM/video recognition, hosted project editing, or agent-generated behavior execution.
-- Reference-video studies and the standalone workspace are not included in this package.
+The default `<SamplerRoot />` starts collapsed. Use `<SamplerRoot defaultOpen />` to start open. In Vite production builds the root UI is hidden by default; `productionEnabled` explicitly enables it. Hiding the panel does not remove parameter hooks or animation bindings. Apply your chosen values to code before removing the tool; a hook-free production adapter is not implemented.
+
+## Optional direct project writes and MCP
+
+The original `SamplerProvider` / `useSampler` integration remains available for projects that need direct configuration writes through a localhost Vite bridge. This is a separate advanced integration; see [PROJECT-BRIDGE.md](./PROJECT-BRIDGE.md). MCP tools operate on that file-backed configuration, not the basic inline controls. Do not mix the two control systems for the same component.
+
+## Scope
+
+Physical Sampler controls registered components inside the current project. Installing it does not automatically edit application code, bind arbitrary components, or start another project. A coding agent can perform the first integration. Reference-video studies are excluded from the package. Automatic video recognition and agent-generated animation execution are not implemented.
