@@ -20,6 +20,22 @@ React and React DOM 18+ are required. The basic panel does not require Motion, a
 
 ## Or ask your coding agent
 
+For Codex, install the bundled Skill once after installing this package:
+
+```sh
+npx --no-install physical-sampler install-skill --global
+```
+
+It installs into `$CODEX_HOME/skills/physical-sampler` (or `~/.codex/skills/physical-sampler`) and records the local package source for first-time integration in other projects. Existing skills are preserved. Open a new Codex session to load it, then use a short request:
+
+> Use Physical Sampler to tune this component.
+
+Or explicitly invoke `$physical-sampler`. To limit discovery to the current project instead, run `npx --no-install physical-sampler install-skill`, which installs under `.agents/skills/physical-sampler`.
+
+The Skill teaches the agent how to install the package when needed, mount the root, bind useful controls, verify the page, and apply copied values. It is not an automatically running service. Each project still needs its own dependency and first-time integration. This installer targets Codex; other agents can read the brief below or adapt the bundled Skill to their own discovery conventions. Moving the package requires updating the installed source hint or reinstalling the Skill after removing the old copy.
+
+Without the Skill, use the full brief below.
+
 Copy this brief to your coding agent (replace the install path with your local checkout until npm publication):
 
 > Install Physical Sampler in this React project using its existing package manager. Import SamplerRoot and usePhysicalSampler from physical-sampler. Mount one SamplerRoot as a sibling alongside the application, not as a wrapper. Styles load automatically. In the component I want to tune, call usePhysicalSampler with a stable ID and a small set of controls based on its existing values. Bind the returned values to actual styles or animation properties, and spread attributes on the component's DOM element. Use the replay counter to restart an animation when useful. Preserve existing behavior. Start the project's usual development command and verify that the panel opens and closes and controls update the component. After I share copied Physical Sampler values, apply them to the corresponding control defaults or production code and verify the result. No Vite plugin or MCP setup is required for this basic flow.

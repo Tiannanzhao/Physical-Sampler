@@ -1,0 +1,4 @@
+interface:
+  display_name: "Physical Sampler"
+  short_description: "Tune real components with live controls in your React app"
+  default_prompt: "Use $physical-sampler to add live controls to this component."
