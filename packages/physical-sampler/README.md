@@ -20,19 +20,26 @@ React and React DOM 18+ are required. The basic panel does not require Motion, a
 
 ## Or ask your coding agent
 
-For Codex, install the bundled Skill once after installing this package:
+Install the bundled Skill for the agent you use. Run one of these commands after installing the package:
 
-```sh
-npx --no-install physical-sampler install-skill --global
-```
+| Agent | Install once for this user | Project directory | Personal directory |
+| --- | --- | --- | --- |
+| Codex | `npx --no-install physical-sampler install-skill --agent codex --global` | `.agents/skills` | `$CODEX_HOME/skills` or `~/.codex/skills` |
+| Claude Code | `npx --no-install physical-sampler install-skill --agent claude --global` | `.claude/skills` | `~/.claude/skills` |
+| Cursor | `npx --no-install physical-sampler install-skill --agent cursor --global` | `.cursor/skills` | `~/.cursor/skills` |
+| GitHub Copilot CLI | `npx --no-install physical-sampler install-skill --agent copilot --global` | `.github/skills` | `~/.copilot/skills` |
 
-It installs into `$CODEX_HOME/skills/physical-sampler` (or `~/.codex/skills/physical-sampler`) and records the local package source for first-time integration in other projects. Existing skills are preserved. Open a new Codex session to load it, then use a short request:
+The default agent is Codex, so the existing `install-skill --global` command still works. Omit `--global` to install in the current project; optionally pass a project folder. Each destination contains `physical-sampler/SKILL.md`. The installer preserves existing skills and does not configure MCP or install other agents.
+
+The portable Skill is shared across all targets. It records the local package source so an agent can integrate other local projects. Start a new agent session or reload its skill discovery, then say:
 
 > Use Physical Sampler to tune this component.
 
-Or explicitly invoke `$physical-sampler`. To limit discovery to the current project instead, run `npx --no-install physical-sampler install-skill`, which installs under `.agents/skills/physical-sampler`.
+Explicit invocation: `$physical-sampler` in Codex; `/physical-sampler` in Claude Code or Cursor. For Copilot CLI, describe the task and let it select the skill. Availability depends on the client's skill support and settings.
 
-The Skill teaches the agent how to install the package when needed, mount the root, bind useful controls, verify the page, and apply copied values. It is not an automatically running service. Each project still needs its own dependency and first-time integration. This installer targets Codex; other agents can read the brief below or adapt the bundled Skill to their own discovery conventions. Moving the package requires updating the installed source hint or reinstalling the Skill after removing the old copy.
+Directories follow the official [Claude Code](https://code.claude.com/docs/en/skills), [Cursor](https://cursor.com/docs/skills), and [Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills) documentation. Installer behavior is tested; live sessions in those clients have not been verified. Local user-level installation does not deploy the Skill or its package source to cloud agents. For cloud/remote sessions, use a project Skill and a package source accessible in that environment. Moving the local package requires updating the installed source hint or reinstalling after removing the old Skill copy.
+
+The Skill guides dependency installation when needed, root mounting, useful bindings, preview checks, and applying copied values. It is not a running service. Each project still needs its own dependency and first-time integration. Other clients supporting Agent Skills can use the same bundled files; unsupported clients can use the full brief below.
 
 Without the Skill, use the full brief below.
 
