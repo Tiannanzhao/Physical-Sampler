@@ -1,0 +1,21 @@
+{
+  "name": "physical-sampler",
+  "version": "0.1.0",
+  "description": "In-project parameter controls for React and Vite, with a local configuration bridge and optional MCP tools.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tiannanzhao/Physical-Sampler.git",
+    "directory": "packages/physical-sampler"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./react": "./react.jsx",
+    "./vite": "./vite.js",
+    "./styles.css": "./sampler.css"
+  },
+  "bin": { "physical-sampler": "./cli.js" },
+  "peerDependencies": { "react": ">=18", "react-dom": ">=18", "vite": ">=5" },
+  "sideEffects": ["**/*.css"],
+  "files": ["*.js", "*.jsx", "*.css", "README.md"]
+}
