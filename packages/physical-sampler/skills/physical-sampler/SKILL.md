@@ -1,6 +1,6 @@
 ---
 name: physical-sampler
-description: Add or use Physical Sampler live controls in the user's current React project. Use when asked to open Physical Sampler, tune a component with it, apply copied sampler values, or close/remove its panel. Includes Chinese requests such as 打开 Physical Sampler and 给这个组件加调参面板. Does not provide automatic video motion analysis.
+description: Add or use Physical Sampler live controls in the user's current React project. Use when asked to open Physical Sampler, tune a component with it, apply copied sampler values, or close/remove its panel. Example requests include "Open Physical Sampler" and "Add live controls to this component". Does not provide automatic video motion analysis.
 ---
 
 # Physical Sampler

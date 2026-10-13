@@ -14,7 +14,7 @@ npm install /absolute/path/to/Physical-Sampler/packages/physical-sampler
 
 See the [installation guide](./packages/physical-sampler/README.md) for manual setup and a copyable coding-agent brief. First-time source integration is required in each project; an agent can do it for the user.
 
-After installing the package, install its Skill once with `npx --no-install physical-sampler install-skill --agent codex --global`. Targets `claude`, `cursor`, and `copilot` are also available; see the installation guide. Start a new agent session, then say **“用 Physical Sampler 给这个组件加实时调参面板”** or invoke `$physical-sampler`. The Skill handles the integration workflow; project dependencies remain project-local. Video motion analysis is not implemented yet.
+After installing the package, install its Skill once with `npx --no-install physical-sampler install-skill --agent codex --global`. Targets `claude`, `cursor`, and `copilot` are also available; see the installation guide. Start a new agent session, then say **“Add live controls to this component with Physical Sampler”** or invoke `$physical-sampler`. The Skill handles the integration workflow; project dependencies remain project-local. Video motion analysis is not implemented yet.
 
 ## Try this repository
 
